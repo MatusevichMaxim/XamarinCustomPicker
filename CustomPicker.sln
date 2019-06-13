@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPicker", "CustomPicker\CustomPicker.csproj", "{43BBA44C-1DF9-4D4A-943F-23C5E240E25E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Release|iPhone = Release|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43BBA44C-1DF9-4D4A-943F-23C5E240E25E}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{43BBA44C-1DF9-4D4A-943F-23C5E240E25E}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{43BBA44C-1DF9-4D4A-943F-23C5E240E25E}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{43BBA44C-1DF9-4D4A-943F-23C5E240E25E}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{43BBA44C-1DF9-4D4A-943F-23C5E240E25E}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{43BBA44C-1DF9-4D4A-943F-23C5E240E25E}.Debug|iPhone.Build.0 = Debug|iPhone
+		{43BBA44C-1DF9-4D4A-943F-23C5E240E25E}.Release|iPhone.ActiveCfg = Release|iPhone
+		{43BBA44C-1DF9-4D4A-943F-23C5E240E25E}.Release|iPhone.Build.0 = Release|iPhone
+	EndGlobalSection
+EndGlobal

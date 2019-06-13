@@ -1,0 +1,17 @@
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/obj/iPhoneSimulator/Debug/device-builds/iphone11.2-12.2/ibtool/_BundleResourceWithLogicalName.items
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/obj/iPhoneSimulator/Debug/device-builds/iphone11.2-12.2/actool/_PartialAppManifest.items
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/obj/iPhoneSimulator/Debug/device-builds/iphone11.2-12.2/actool/_BundleResourceWithLogicalName.items
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/obj/iPhoneSimulator/Debug/device-builds/iphone11.2-12.2/coremlc/_PartialAppManifest.items
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/obj/iPhoneSimulator/Debug/device-builds/iphone11.2-12.2/coremlc/_BundleResourceWithLogicalName.items
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/obj/iPhoneSimulator/Debug/device-builds/iphone11.2-12.2/optimized/
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/obj/iPhoneSimulator/Debug/CustomPicker.csprojAssemblyReference.cache
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/obj/iPhoneSimulator/Debug/CustomPicker.csproj.CoreCompileInputs.cache
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/bin/iPhoneSimulator/Debug/CustomPicker.exe
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/bin/iPhoneSimulator/Debug/CustomPicker.pdb
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/bin/iPhoneSimulator/Debug/PureLayout.Net.dll
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/bin/iPhoneSimulator/Debug/Xamarin.Essentials.dll
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/bin/iPhoneSimulator/Debug/Xamarin.Essentials.pdb
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/obj/iPhoneSimulator/Debug/CustomPicker.csproj.CopyComplete
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/obj/iPhoneSimulator/Debug/CustomPicker.exe
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/obj/iPhoneSimulator/Debug/CustomPicker.pdb
+/Users/maxim.matusevich/Desktop/Projects/CustomPicker/CustomPicker/bin/iPhoneSimulator/Debug/UPCarouselFlowLayout.dll
