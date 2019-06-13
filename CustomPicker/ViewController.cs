@@ -1,6 +1,4 @@
-﻿using CoreGraphics;
-using CustomPicker.Interfaces;
-using Foundation;
+﻿using CustomPicker.Interfaces;
 using System;
 using System.Collections.Generic;
 using UIKit;
@@ -14,7 +12,6 @@ namespace CustomPicker
     {
         public List<string> titles = new List<string> { "$$", "$$", "$$", "$$$$", "$$", "$$$$", "$", "$$$", "$", "$$$" };
         public YetPickerView pickerView;
-
 
 
         public ViewController(IntPtr handle) : base(handle)

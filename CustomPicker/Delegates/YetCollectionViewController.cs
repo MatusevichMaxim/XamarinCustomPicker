@@ -1,5 +1,6 @@
 ﻿using CoreGraphics;
 using CustomPicker.Cells;
+using CustomPicker.Helpers;
 using CustomPicker.Interfaces;
 using Foundation;
 using System;
@@ -13,14 +14,12 @@ namespace CustomPicker.Delegates
         private readonly IYetCollectionProvider _provider;
         private readonly nfloat _maxElementWidth = 0;
 
-        public NSIndexPath selectedCellIndexPath = NSIndexPath.FromItemSection(0, 0);
-        public UIFont font = UIFont.PreferredTitle1;
-        public UIColor textColor = UIColor.LightGray;
-        public bool useTwoLineMode = true;
-        public bool programmaticallySet;
-
-
-        public int SelectedRow => selectedCellIndexPath.Row;
+        public NSIndexPath SelectedCellIndexPath { get; set; } = NSIndexPath.FromItemSection(0, 0);
+        public UIFont Font { get; set; } = UIFont.PreferredTitle1;
+        public UIColor TextColor { get; set; } = UIColor.LightGray;
+        public bool UseTwoLineMode { get; set; }
+        public bool ProgrammaticallySet { get; set; }
+        public int SelectedRow => SelectedCellIndexPath.Row;
 
 
         public YetCollectionViewController(UICollectionViewFlowLayout layout, IYetCollectionProvider provider, nfloat maxElementWidth)
@@ -32,16 +31,13 @@ namespace CustomPicker.Delegates
 
         public void SelectRow(NSIndexPath indexPath, bool animated)
         {
-            var collectionView = CollectionView;
-            if (collectionView != null)
+            if (CollectionView != null)
             {
-                selectedCellIndexPath = indexPath;
+                SelectedCellIndexPath = indexPath;
                 ScrollToIndex((int)indexPath.Item, animated);
-                ChangeSelectionForCell(indexPath, collectionView, animated);
+                ChangeSelectionForCell(indexPath, CollectionView, animated);
             }
         }
-
-        // UICollectionViewDelegate/UICollectionViewDataSource
 
         public override nint GetItemsCount(UICollectionView collectionView, nint section)
         {
@@ -65,15 +61,15 @@ namespace CustomPicker.Delegates
         // UICollectionViewDelegateFlowLayout
 
         [Export("collectionView:layout:sizeForItemAtIndexPath:")]
-        public CoreGraphics.CGSize GetSizeForItem(UICollectionView collectionView, UICollectionViewLayout layout, NSIndexPath indexPath)
+        public CGSize GetSizeForItem(UICollectionView collectionView, UICollectionViewLayout layout, NSIndexPath indexPath)
         {
             var text = _provider.TitleForRow(this, indexPath.Row);
             var maxHeight = collectionView.Bounds.Height - collectionView.ContentInset.Top - collectionView.ContentInset.Bottom;
-            return SizeForText(text, new CGSize(_maxElementWidth, maxHeight));
+            return StringHelper.SizeForText(text, new CGSize(_maxElementWidth, maxHeight), Font);
         }
 
-        // UIScrollviewDelegate
-
+        // UIScrollViewDelegate
+        
         public override void DecelerationEnded(UIScrollView scrollView)
         {
             ScrollToPosition(scrollView);
@@ -112,24 +108,12 @@ namespace CustomPicker.Delegates
             }
         }
 
-        public CGSize SizeForText(string text, CGSize maxSize)
-        {
-            var attr = new UIStringAttributes { Font = font };
-            var frame = ((NSString)text).GetBoundingRect(maxSize, NSStringDrawingOptions.UsesLineFragmentOrigin, attr, new NSStringDrawingContext());
-            frame = frame.Integral();
-            frame.Width += 10;
-            frame.Width = (nfloat)Math.Max(frame.Width, 30);
-            frame.Size = new CGSize(frame.Size.Width + 10, maxSize.Height);
-            return frame.Size;
-        }
-
         private void ConfigureCollectionViewCell(YetCollectionViewCell cell, NSIndexPath indexPath)
         {
-            var prov = _provider;
-            if (prov != null)
+            if (_provider != null)
             {
-                cell.Text = prov.TitleForRow(this, indexPath.Row);
-                cell.Selected = selectedCellIndexPath == indexPath;
+                cell.Text = _provider.TitleForRow(this, indexPath.Row);
+                cell.Selected = SelectedCellIndexPath == indexPath;
                 cell.Delegate = this;
             }
         }
@@ -137,45 +121,31 @@ namespace CustomPicker.Delegates
         private void ScrollToIndex(int index, bool animated)
         {
             var indexPath = NSIndexPath.FromItemSection(index, 0);
-            var cv = CollectionView;
-            var attributes = cv.GetLayoutAttributesForItem(indexPath);
-            if (cv != null && attributes != null)
+            var attributes = CollectionView.GetLayoutAttributesForItem(indexPath);
+            if (CollectionView != null && attributes != null)
             {
-                var halfWidth = cv.Frame.Width / 2;
+                var halfWidth = CollectionView.Frame.Width / 2;
                 var offset = new CGPoint(attributes.Frame.GetMidX() - halfWidth, 0);
-                cv.SetContentOffset(offset, animated);
+                CollectionView.SetContentOffset(offset, animated);
             }
             else
-            {
                 return;
-            }
         }
 
         private void ChangeSelectionForCell(NSIndexPath indexPath, UICollectionView collectionView, bool animated)
         {
             collectionView.SelectItem(indexPath, animated, UICollectionViewScrollPosition.CenteredHorizontally);
 
-            if (!programmaticallySet)
+            if (!ProgrammaticallySet)
                 _provider.DidSelectRow(this, (int)indexPath.Item);
             else
-                programmaticallySet = false;
+                ProgrammaticallySet = false;
         }
 
-        // HPCollectionViewCellDelegate
+        // IYetCollectionViewCellDelegate
 
-        public UIFont FontForCollectionViewCell(YetCollectionViewCell cvCell)
-        {
-            return font;
-        }
-
-        public UIColor TextColorForCollectionViewCell(YetCollectionViewCell cvCell)
-        {
-            return textColor;
-        }
-
-        public bool UseTwolineModeForCollectionViewCell(YetCollectionViewCell cvCell)
-        {
-            return useTwoLineMode;
-        }
+        public UIFont FontForCollectionViewCell(YetCollectionViewCell cvCell) => Font;
+        public UIColor TextColorForCollectionViewCell(YetCollectionViewCell cvCell) => TextColor;
+        public bool UseTwolineModeForCollectionViewCell(YetCollectionViewCell cvCell) => UseTwoLineMode;
     }
 }

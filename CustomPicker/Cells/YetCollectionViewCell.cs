@@ -63,16 +63,14 @@ namespace CustomPicker.Cells
         {
             BackgroundColor = UIColor.Clear;
 
-            var perspective = CATransform3D.Identity;
-            perspective.m34 = -1.0f / 750.0f;
-            ContentView.Layer.SublayerTransform = perspective;
-
             if (_label == null)
             {
-                _label = new UILabel();
-                _label.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
-                _label.BackgroundColor = UIColor.Clear;
-                _label.TextAlignment = UITextAlignment.Center;
+                _label = new UILabel
+                {
+                    AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight,
+                    BackgroundColor = UIColor.Clear,
+                    TextAlignment = UITextAlignment.Center
+                };
                 ContentView.AddSubview(_label);
 
                 _label.AutoPinEdgesToSuperviewEdges();

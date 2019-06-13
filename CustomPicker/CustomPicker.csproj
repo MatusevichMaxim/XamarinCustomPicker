@@ -126,7 +126,6 @@
         <Folder Include="Resources\" />
         <Folder Include="Interfaces\" />
         <Folder Include="Cells\" />
-        <Folder Include="Sources\" />
         <Folder Include="Delegates\" />
         <Folder Include="Layouts\" />
         <Folder Include="Helpers\" />
@@ -151,10 +150,10 @@
         <Compile Include="Cells\YetCollectionViewCell.cs" />
         <Compile Include="Interfaces\IYetCollectionViewCellDelegate.cs" />
         <Compile Include="Interfaces\IYetCollectionProvider.cs" />
-        <Compile Include="Layouts\YetCollectionViewFlowlayout.cs" />
-        <Compile Include="Helpers\ValuesHelper.cs" />
+        <Compile Include="Layouts\YetCollectionViewFlowLayout.cs" />
         <Compile Include="Interfaces\IHorizontalPickerViewDataSource.cs" />
         <Compile Include="Interfaces\IHorizontalPickerViewDelegate.cs" />
+        <Compile Include="Helpers\StringHelper.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

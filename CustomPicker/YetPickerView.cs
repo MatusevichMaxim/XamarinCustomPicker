@@ -2,6 +2,7 @@
 using CoreGraphics;
 using CustomPicker.Cells;
 using CustomPicker.Delegates;
+using CustomPicker.Helpers;
 using CustomPicker.Interfaces;
 using CustomPicker.Layouts;
 using Foundation;
@@ -15,7 +16,7 @@ namespace YetHealth.IOS.UI
     public class YetPickerView : UIView, IYetCollectionProvider
     {
         private YetCollectionViewController _collectionController;
-        private YetCollectionViewFlowlayout _collectionViewLayout;
+        private YetCollectionViewFlowLayout _collectionViewLayout;
         private CAShapeLayer _shapeLayer;
         private UICollectionView _collectionView;
         private bool _isInitialized;
@@ -52,9 +53,8 @@ namespace YetHealth.IOS.UI
         {
             TranslatesAutoresizingMaskIntoConstraints = false;
 
-            var layout = new YetCollectionViewFlowlayout();
             var maxElementWidth = Bounds.Width * HorizontalPickerViewConstants.maxLabelWidthFactor;
-            _collectionController = new YetCollectionViewController(layout, this, maxElementWidth);
+            _collectionController = new YetCollectionViewController(new YetCollectionViewFlowLayout(), this, maxElementWidth);
             _collectionController.CollectionView.RegisterClassForCell(typeof(YetCollectionViewCell), nameof(YetCollectionViewCell));
             _collectionController.CollectionView.BackgroundColor = UIColor.Clear;
             _collectionController.CollectionView.ShowsHorizontalScrollIndicator = false;
@@ -66,7 +66,7 @@ namespace YetHealth.IOS.UI
             AddSubview(_collectionView);
             _collectionView.AutoPinEdgesToSuperviewEdges();
 
-            _collectionViewLayout = _collectionController.Layout as YetCollectionViewFlowlayout;
+            _collectionViewLayout = _collectionController.Layout as YetCollectionViewFlowLayout;
         }
 
         public override void LayoutSubviews()
@@ -86,12 +86,12 @@ namespace YetHealth.IOS.UI
             }
         }
 
-        public int SelectedRow() => _collectionController.selectedCellIndexPath.Row;
+        public int SelectedRow() => _collectionController.SelectedCellIndexPath.Row;
 
         public void SelectRow(int rowIndex, bool animated)
         {
             var indexPath = NSIndexPath.FromItemSection(rowIndex, 0);
-            _collectionController.programmaticallySet = true;
+            _collectionController.ProgrammaticallySet = true;
             _collectionController.SelectRow(indexPath, animated);
         }
 
@@ -109,38 +109,32 @@ namespace YetHealth.IOS.UI
         {
             if (del != null && dataSource != null && !_isInitialized)
             {
-                _collectionController.font = del?.TextFontForHorizontalPickerView(this) ?? UIFont.PreferredBody;
-                _collectionController.textColor = del?.TextColorForHorizontalPickerView(this) ?? UIColor.LightGray;
-                _collectionController.useTwoLineMode = del?.UseTwoLineModeForHorizontalPickerView(this) ?? false;
+                _collectionController.Font = del?.TextFontForHorizontalPickerView(this) ?? UIFont.PreferredBody;
+                _collectionController.TextColor = del?.TextColorForHorizontalPickerView(this) ?? UIColor.LightGray;
+                _collectionController.UseTwoLineMode = del?.UseTwoLineModeForHorizontalPickerView(this) ?? false;
 
                 _isInitialized = true;
-                var view = _collectionView;
-                var layout = _collectionViewLayout;
-                if (view != null && layout != null)
+                if (_collectionView != null && _collectionViewLayout != null)
                 {
-                    layout.activeDistance = (nfloat)Math.Floor(view.Bounds.Width / 2);
-                    layout.midX = (nfloat)Math.Ceiling(view.Bounds.GetMidX());
+                    _collectionViewLayout.ActiveDistance = (nfloat)Math.Floor(_collectionView.Bounds.Width / 2);
+                    _collectionViewLayout.MidX = (nfloat)Math.Ceiling(_collectionView.Bounds.GetMidX());
                     var numberOfElements = dataSource.NumberOfRowsInHorizontalPickerView(this);
-                    layout.lastElementIndex = numberOfElements - 1;
+                    _collectionViewLayout.LastElementIndex = numberOfElements - 1;
 
                     var firstElement = del.TitleForRow(this, 0);
-                    var lastElement = del.TitleForRow(this, layout.lastElementIndex);
+                    var lastElement = del.TitleForRow(this, _collectionViewLayout.LastElementIndex);
 
-                    var firstSize = _collectionController.SizeForText(firstElement, view.Bounds.Size).Width / 2;
-                    var lastSize = _collectionController.SizeForText(lastElement, view.Bounds.Size).Width / 2;
-                    layout.SectionInset = new UIEdgeInsets(layout.SectionInset.Top, layout.midX - firstSize, layout.SectionInset.Bottom, layout.midX - lastSize);
+                    var firstSize = StringHelper.SizeForText(firstElement, _collectionView.Bounds.Size, _collectionController.Font).Width / 2;
+                    var lastSize = StringHelper.SizeForText(lastElement, _collectionView.Bounds.Size, _collectionController.Font).Width / 2;
+                    _collectionViewLayout.SectionInset = new UIEdgeInsets(_collectionViewLayout.SectionInset.Top, _collectionViewLayout.MidX - firstSize, _collectionViewLayout.SectionInset.Bottom, _collectionViewLayout.MidX - lastSize);
 
-                    await Task.Delay(250);
-                    view.SelectItem(_collectionController.selectedCellIndexPath, false, UICollectionViewScrollPosition.CenteredHorizontally);
+                    await Task.Delay(250); // HACK: WTF
+                    _collectionView.SelectItem(_collectionController.SelectedCellIndexPath, false, UICollectionViewScrollPosition.CenteredHorizontally);
                 }
             }
             else
-            {
                 return;
-            }
         }
-
-        // HPCollectionVCProvider
 
         public int NumberOfRowsInCollectionViewController(YetCollectionViewController controller)
         {
