@@ -10,8 +10,8 @@ namespace CustomPicker
 {
     public partial class ViewController : UIViewController, IHorizontalPickerViewDataSource, IHorizontalPickerViewDelegate
     {
-        public List<string> titles = new List<string> { "$$", "$$", "$$", "$$$$", "$$", "$$$$", "$", "$$$", "$", "$$$" };
-        public YetPickerView pickerView;
+        private List<string> _items = new List<string>();
+        private YetPickerView pickerView;
 
 
         public ViewController(IntPtr handle) : base(handle)
@@ -22,17 +22,40 @@ namespace CustomPicker
         {
             base.ViewDidLoad();
 
-            pickerView = new YetPickerView();
+            for (int i = 0; i < 31; i++)
+                _items.Add(i.ToString());
 
-            pickerView.DataSource = this;
-            pickerView.Delegate = this;
+            pickerView = new YetPickerView
+            {
+                DataSource = this,
+                Delegate = this,
+                MaxCellWidth = 70,
+            };
+
+            var leftSeparator = new UIView();
+            leftSeparator.BackgroundColor = UIColor.FromRGB(255, 116, 158);
+            pickerView.AddSubview(leftSeparator);
+
+            var rightSeparator = new UIView();
+            rightSeparator.BackgroundColor = UIColor.FromRGB(255, 116, 158);
+            pickerView.AddSubview(rightSeparator);
 
             View.AddSubview(pickerView);
 
             pickerView.AutoAlignAxisToSuperviewAxis(ALAxis.Horizontal);
-            pickerView.AutoPinEdgeToSuperviewEdge(ALEdge.Left);
-            pickerView.AutoPinEdgeToSuperviewEdge(ALEdge.Right);
-            pickerView.AutoSetDimension(ALDimension.Height, 50);
+            pickerView.AutoPinEdgeToSuperviewEdge(ALEdge.Left, 63);
+            pickerView.AutoPinEdgeToSuperviewEdge(ALEdge.Right, 63);
+            pickerView.AutoSetDimension(ALDimension.Height, 52);
+
+            leftSeparator.AutoAlignAxis(ALAxis.Vertical, pickerView, -35);
+            leftSeparator.AutoSetDimension(ALDimension.Width, 2);
+            leftSeparator.AutoPinEdgeToSuperviewEdge(ALEdge.Top);
+            leftSeparator.AutoPinEdgeToSuperviewEdge(ALEdge.Bottom);
+
+            rightSeparator.AutoAlignAxis(ALAxis.Vertical, pickerView, 35);
+            rightSeparator.AutoSetDimension(ALDimension.Width, 2);
+            rightSeparator.AutoPinEdgeToSuperviewEdge(ALEdge.Top);
+            rightSeparator.AutoPinEdgeToSuperviewEdge(ALEdge.Bottom);
         }
 
         public void DidSelectRow(YetPickerView pickerView, int row)
@@ -41,7 +64,7 @@ namespace CustomPicker
 
         public int NumberOfRowsInHorizontalPickerView(YetPickerView pickerView)
         {
-            return titles.Count;
+            return _items.Count;
         }
 
         public bool PickerViewShouldMask(YetPickerView pickerView)
@@ -61,7 +84,7 @@ namespace CustomPicker
 
         public string TitleForRow(YetPickerView pickerView, int row)
         {
-            return titles[row];
+            return _items[row];
         }
 
         public bool UseTwoLineModeForHorizontalPickerView(YetPickerView pickerView)

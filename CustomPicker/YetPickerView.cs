@@ -21,6 +21,8 @@ namespace YetHealth.IOS.UI
         private UICollectionView _collectionView;
         private bool _isInitialized;
 
+        public nfloat MaxCellWidth { get; set; } = 0;
+
         private IHorizontalPickerViewDelegate _delegate;
         public IHorizontalPickerViewDelegate Delegate
         {
@@ -109,14 +111,14 @@ namespace YetHealth.IOS.UI
         {
             if (del != null && dataSource != null && !_isInitialized)
             {
-                _collectionController.Font = del?.TextFontForHorizontalPickerView(this) ?? UIFont.PreferredBody;
+                _collectionController.Font = del?.TextFontForHorizontalPickerView(this) ?? UIFont.SystemFontOfSize(20, UIFontWeight.Light);
                 _collectionController.TextColor = del?.TextColorForHorizontalPickerView(this) ?? UIColor.LightGray;
                 _collectionController.UseTwoLineMode = del?.UseTwoLineModeForHorizontalPickerView(this) ?? false;
 
                 _isInitialized = true;
                 if (_collectionView != null && _collectionViewLayout != null)
                 {
-                    _collectionViewLayout.ActiveDistance = (nfloat)Math.Floor(_collectionView.Bounds.Width / 2);
+                    _collectionViewLayout.ActiveDistance = (nfloat)Math.Floor(_collectionView.Bounds.Width);
                     _collectionViewLayout.MidX = (nfloat)Math.Ceiling(_collectionView.Bounds.GetMidX());
                     var numberOfElements = dataSource.NumberOfRowsInHorizontalPickerView(this);
                     _collectionViewLayout.LastElementIndex = numberOfElements - 1;
@@ -128,7 +130,7 @@ namespace YetHealth.IOS.UI
                     var lastSize = StringHelper.SizeForText(lastElement, _collectionView.Bounds.Size, _collectionController.Font).Width / 2;
                     _collectionViewLayout.SectionInset = new UIEdgeInsets(_collectionViewLayout.SectionInset.Top, _collectionViewLayout.MidX - firstSize, _collectionViewLayout.SectionInset.Bottom, _collectionViewLayout.MidX - lastSize);
 
-                    await Task.Delay(250); // HACK: WTF
+                    await Task.Delay(250);
                     _collectionView.SelectItem(_collectionController.SelectedCellIndexPath, false, UICollectionViewScrollPosition.CenteredHorizontally);
                 }
             }

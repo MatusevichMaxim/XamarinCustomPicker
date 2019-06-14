@@ -1,5 +1,4 @@
-﻿using CoreAnimation;
-using CustomPicker.Interfaces;
+﻿using CustomPicker.Interfaces;
 using System;
 using UIKit;
 using PureLayout.Net;
@@ -8,7 +7,7 @@ namespace CustomPicker.Cells
 {
     public class YetCollectionViewCell : UICollectionViewCell
     {
-        private UIColor _textColor = UIColor.LightGray;
+        private UIColor _textColor = new UIColor(189, 189, 189, 0);
         private UILabel _label;
 
         private string _text;
@@ -49,7 +48,7 @@ namespace CustomPicker.Cells
             set
             {
                 base.Selected = value;
-                _label.TextColor = base.Selected ? TintColor : _textColor;
+                _label.TextColor = base.Selected ? UIColor.Black : _textColor;
             } 
         }
 

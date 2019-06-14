@@ -20,7 +20,7 @@ namespace CustomPicker.Layouts
 
         public override void PrepareLayout()
         {
-            MinimumInteritemSpacing = 0;
+            MinimumInteritemSpacing = 37;
             ScrollDirection = UICollectionViewScrollDirection.Horizontal;
         }
 
@@ -39,11 +39,14 @@ namespace CustomPicker.Layouts
                     var normalizeDistance = distance / ActiveDistance;
                     if (Math.Abs(distance) < ActiveDistance)
                     {
-                        itemAttributesCopy.Alpha = 1.0f - (nfloat)Math.Abs(normalizeDistance);
+                        itemAttributesCopy.Alpha = 1.0f - (nfloat)Math.Abs(normalizeDistance * 2);
+                        itemAttributesCopy.Transform = CGAffineTransform.MakeScale(1.5f - (nfloat)Math.Abs(normalizeDistance * 2),
+                                                                                   1.5f - (nfloat)Math.Abs(normalizeDistance * 2));
                     }
                     else
                     {
-                        itemAttributesCopy.Alpha = 0.1f;
+                        itemAttributesCopy.Alpha = 0.9f;
+                        itemAttributesCopy.Transform = CGAffineTransform.MakeScale(1.0f, 1.0f);
                     }
                     attributesCopy.Add(itemAttributesCopy);
                 }

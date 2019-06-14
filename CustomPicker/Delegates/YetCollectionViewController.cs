@@ -15,7 +15,7 @@ namespace CustomPicker.Delegates
         private readonly nfloat _maxElementWidth = 0;
 
         public NSIndexPath SelectedCellIndexPath { get; set; } = NSIndexPath.FromItemSection(0, 0);
-        public UIFont Font { get; set; } = UIFont.PreferredTitle1;
+        public UIFont Font { get; set; } = UIFont.SystemFontOfSize(20, UIFontWeight.Thin);
         public UIColor TextColor { get; set; } = UIColor.LightGray;
         public bool UseTwoLineMode { get; set; }
         public bool ProgrammaticallySet { get; set; }
