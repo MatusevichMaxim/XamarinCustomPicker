@@ -15,7 +15,7 @@ namespace CustomPicker.Delegates
         private readonly nfloat _maxElementWidth = 0;
 
         public NSIndexPath SelectedCellIndexPath { get; set; } = NSIndexPath.FromItemSection(0, 0);
-        public UIFont Font { get; set; } = UIFont.SystemFontOfSize(20, UIFontWeight.Thin);
+        public UIFont Font { get; set; } = UIFont.PreferredTitle1;
         public UIColor TextColor { get; set; } = UIColor.LightGray;
         public bool UseTwoLineMode { get; set; }
         public bool ProgrammaticallySet { get; set; }
@@ -63,7 +63,7 @@ namespace CustomPicker.Delegates
         [Export("collectionView:layout:sizeForItemAtIndexPath:")]
         public CGSize GetSizeForItem(UICollectionView collectionView, UICollectionViewLayout layout, NSIndexPath indexPath)
         {
-            var text = _provider.TitleForRow(this, indexPath.Row);
+            var text = _provider?.TitleForRow(this, indexPath.Row) ?? string.Empty;
             var maxHeight = collectionView.Bounds.Height - collectionView.ContentInset.Top - collectionView.ContentInset.Bottom;
             return StringHelper.SizeForText(text, new CGSize(_maxElementWidth, maxHeight), Font);
         }
@@ -85,16 +85,18 @@ namespace CustomPicker.Delegates
 
         private void ScrollToPosition(UIScrollView scrollView)
         {
-            var collectionView = (UICollectionView)scrollView;
-            var item = IndexPathForCenterCellFromCollectionview(collectionView);
+            var collectionView = scrollView as UICollectionView;
+            var item = IndexPathForCenterCellFromCollectionView(collectionView);
             if (collectionView != null && item != null)
             {
                 ScrollToIndex(item.Row, true);
                 ChangeSelectionForCell(item, collectionView, true);
             }
+            else
+                return;
         }
 
-        private NSIndexPath IndexPathForCenterCellFromCollectionview(UICollectionView collectionView)
+        private NSIndexPath IndexPathForCenterCellFromCollectionView(UICollectionView collectionView)
         {
             var point = collectionView.ConvertPointFromView(collectionView.Center, collectionView.Superview);
             var indexPath = collectionView.IndexPathForItemAtPoint(point);
@@ -135,9 +137,8 @@ namespace CustomPicker.Delegates
         private void ChangeSelectionForCell(NSIndexPath indexPath, UICollectionView collectionView, bool animated)
         {
             collectionView.SelectItem(indexPath, animated, UICollectionViewScrollPosition.CenteredHorizontally);
-
             if (!ProgrammaticallySet)
-                _provider.DidSelectRow(this, (int)indexPath.Item);
+                _provider?.DidSelectRow(this, (int)indexPath.Item);
             else
                 ProgrammaticallySet = false;
         }

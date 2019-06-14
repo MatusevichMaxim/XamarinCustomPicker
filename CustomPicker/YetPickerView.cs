@@ -56,7 +56,11 @@ namespace YetHealth.IOS.UI
             TranslatesAutoresizingMaskIntoConstraints = false;
 
             var maxElementWidth = Bounds.Width * HorizontalPickerViewConstants.maxLabelWidthFactor;
-            _collectionController = new YetCollectionViewController(new YetCollectionViewFlowLayout(), this, maxElementWidth);
+            _collectionViewLayout = new YetCollectionViewFlowLayout 
+            { 
+                InteritemSpacing = 37,
+            };
+            _collectionController = new YetCollectionViewController(_collectionViewLayout, this, maxElementWidth);
             _collectionController.CollectionView.RegisterClassForCell(typeof(YetCollectionViewCell), nameof(YetCollectionViewCell));
             _collectionController.CollectionView.BackgroundColor = UIColor.Clear;
             _collectionController.CollectionView.ShowsHorizontalScrollIndicator = false;
@@ -66,9 +70,8 @@ namespace YetHealth.IOS.UI
             _collectionView.AllowsMultipleSelection = false;
             _collectionView.TranslatesAutoresizingMaskIntoConstraints = false;
             AddSubview(_collectionView);
-            _collectionView.AutoPinEdgesToSuperviewEdges();
 
-            _collectionViewLayout = _collectionController.Layout as YetCollectionViewFlowLayout;
+            _collectionView.AutoPinEdgesToSuperviewEdges();
         }
 
         public override void LayoutSubviews()
@@ -107,18 +110,18 @@ namespace YetHealth.IOS.UI
             return UIBezierPath.FromRoundedRect(frame, UIRectCorner.AllCorners, HorizontalPickerViewConstants.pathCornerRadii);
         }
 
-        private async void Adjust(IHorizontalPickerViewDelegate del, IHorizontalPickerViewDataSource dataSource)
+        private void Adjust(IHorizontalPickerViewDelegate del, IHorizontalPickerViewDataSource dataSource)
         {
             if (del != null && dataSource != null && !_isInitialized)
             {
-                _collectionController.Font = del?.TextFontForHorizontalPickerView(this) ?? UIFont.SystemFontOfSize(20, UIFontWeight.Light);
+                _collectionController.Font = del?.TextFontForHorizontalPickerView(this) ?? UIFont.PreferredBody;
                 _collectionController.TextColor = del?.TextColorForHorizontalPickerView(this) ?? UIColor.LightGray;
                 _collectionController.UseTwoLineMode = del?.UseTwoLineModeForHorizontalPickerView(this) ?? false;
 
                 _isInitialized = true;
                 if (_collectionView != null && _collectionViewLayout != null)
                 {
-                    _collectionViewLayout.ActiveDistance = (nfloat)Math.Floor(_collectionView.Bounds.Width);
+                    _collectionViewLayout.ActiveDistance = MaxCellWidth > 0 ? MaxCellWidth : (nfloat)Math.Floor(_collectionView.Bounds.Width);
                     _collectionViewLayout.MidX = (nfloat)Math.Ceiling(_collectionView.Bounds.GetMidX());
                     var numberOfElements = dataSource.NumberOfRowsInHorizontalPickerView(this);
                     _collectionViewLayout.LastElementIndex = numberOfElements - 1;
@@ -130,7 +133,6 @@ namespace YetHealth.IOS.UI
                     var lastSize = StringHelper.SizeForText(lastElement, _collectionView.Bounds.Size, _collectionController.Font).Width / 2;
                     _collectionViewLayout.SectionInset = new UIEdgeInsets(_collectionViewLayout.SectionInset.Top, _collectionViewLayout.MidX - firstSize, _collectionViewLayout.SectionInset.Bottom, _collectionViewLayout.MidX - lastSize);
 
-                    await Task.Delay(250);
                     _collectionView.SelectItem(_collectionController.SelectedCellIndexPath, false, UICollectionViewScrollPosition.CenteredHorizontally);
                 }
             }

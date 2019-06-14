@@ -2,10 +2,9 @@
   <MonoDevelop.Ide.ItemProperties.CustomPicker PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.16187CEB-AC0D-4A3F-B4E6-C4F3D270FF91" />
   <MonoDevelop.Ide.Workbench ActiveDocument="CustomPicker/Layouts/YetCollectionViewFlowLayout.cs">
     <Files>
-      <File FileName="CustomPicker/ViewController.cs" Line="32" Column="25" />
-      <File FileName="CustomPicker/YetPickerView.cs" Line="114" Column="118" />
-      <File FileName="CustomPicker/Delegates/YetCollectionViewController.cs" Line="132" Column="24" />
-      <File FileName="CustomPicker/Layouts/YetCollectionViewFlowLayout.cs" Line="50" Column="96" />
+      <File FileName="CustomPicker/ViewController.cs" Line="32" Column="35" />
+      <File FileName="CustomPicker/YetPickerView.cs" Line="122" Column="1" />
+      <File FileName="CustomPicker/Layouts/YetCollectionViewFlowLayout.cs" Line="45" Column="97" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,8 +13,6 @@
             <Node name="CustomPicker" expanded="True">
               <Node name="Cells" expanded="True" />
               <Node name="Delegates" expanded="True" />
-              <Node name="Helpers" expanded="True" />
-              <Node name="Interfaces" expanded="True" />
               <Node name="Layouts" expanded="True">
                 <Node name="YetCollectionViewFlowLayout.cs" selected="True" />
               </Node>

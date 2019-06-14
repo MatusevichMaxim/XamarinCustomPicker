@@ -22,14 +22,14 @@ namespace CustomPicker
         {
             base.ViewDidLoad();
 
-            for (int i = 0; i < 31; i++)
+            for (int i = 15; i <= 100; i++)
                 _items.Add(i.ToString());
 
             pickerView = new YetPickerView
             {
-                DataSource = this,
-                Delegate = this,
                 MaxCellWidth = 70,
+                Delegate = this,
+                DataSource = this,
             };
 
             var leftSeparator = new UIView();
@@ -41,6 +41,7 @@ namespace CustomPicker
             pickerView.AddSubview(rightSeparator);
 
             View.AddSubview(pickerView);
+            pickerView.ReloadAll();
 
             pickerView.AutoAlignAxisToSuperviewAxis(ALAxis.Horizontal);
             pickerView.AutoPinEdgeToSuperviewEdge(ALEdge.Left, 63);
@@ -60,6 +61,7 @@ namespace CustomPicker
 
         public void DidSelectRow(YetPickerView pickerView, int row)
         {
+            // business logic
         }
 
         public int NumberOfRowsInHorizontalPickerView(YetPickerView pickerView)
@@ -79,7 +81,7 @@ namespace CustomPicker
 
         public UIFont TextFontForHorizontalPickerView(YetPickerView pickerView)
         {
-            return null;
+            return UIFont.SystemFontOfSize(20, UIFontWeight.Light);
         }
 
         public string TitleForRow(YetPickerView pickerView, int row)

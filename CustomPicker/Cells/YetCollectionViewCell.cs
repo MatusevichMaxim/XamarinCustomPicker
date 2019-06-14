@@ -70,6 +70,7 @@ namespace CustomPicker.Cells
                     BackgroundColor = UIColor.Clear,
                     TextAlignment = UITextAlignment.Center
                 };
+                //_label.LayoutIfNeeded();
                 ContentView.AddSubview(_label);
 
                 _label.AutoPinEdgesToSuperviewEdges();
