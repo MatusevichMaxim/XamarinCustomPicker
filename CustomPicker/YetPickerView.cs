@@ -8,7 +8,6 @@ using CustomPicker.Layouts;
 using Foundation;
 using PureLayout.Net;
 using System;
-using System.Threading.Tasks;
 using UIKit;
 
 namespace YetHealth.IOS.UI
@@ -17,11 +16,11 @@ namespace YetHealth.IOS.UI
     {
         private YetCollectionViewController _collectionController;
         private YetCollectionViewFlowLayout _collectionViewLayout;
-        private CAShapeLayer _shapeLayer;
         private UICollectionView _collectionView;
         private bool _isInitialized;
 
         public nfloat MaxCellWidth { get; set; } = 0;
+        public int StartItemIndex { get; set; } = 0;
 
         private IHorizontalPickerViewDelegate _delegate;
         public IHorizontalPickerViewDelegate Delegate
@@ -74,23 +73,6 @@ namespace YetHealth.IOS.UI
             _collectionView.AutoPinEdgesToSuperviewEdges();
         }
 
-        public override void LayoutSubviews()
-        {
-            base.LayoutSubviews();
-
-            if (Delegate?.PickerViewShouldMask(this) ?? false)
-            {
-                _shapeLayer = new CAShapeLayer
-                {
-                    Frame = Bounds,
-                    ContentsScale = UIScreen.MainScreen.Scale
-                };
-
-                Layer.Mask = _shapeLayer;
-                _shapeLayer.Path = ShapePathForFrame(Bounds).CGPath;
-            }
-        }
-
         public int SelectedRow() => _collectionController.SelectedCellIndexPath.Row;
 
         public void SelectRow(int rowIndex, bool animated)
@@ -103,6 +85,7 @@ namespace YetHealth.IOS.UI
         public void ReloadAll()
         {
             _collectionController.CollectionView.ReloadData();
+            SelectRow(StartItemIndex, false);
         }
 
         private UIBezierPath ShapePathForFrame(CGRect frame)
@@ -132,8 +115,6 @@ namespace YetHealth.IOS.UI
                     var firstSize = StringHelper.SizeForText(firstElement, _collectionView.Bounds.Size, _collectionController.Font).Width / 2;
                     var lastSize = StringHelper.SizeForText(lastElement, _collectionView.Bounds.Size, _collectionController.Font).Width / 2;
                     _collectionViewLayout.SectionInset = new UIEdgeInsets(_collectionViewLayout.SectionInset.Top, _collectionViewLayout.MidX - firstSize, _collectionViewLayout.SectionInset.Bottom, _collectionViewLayout.MidX - lastSize);
-
-                    _collectionView.SelectItem(_collectionController.SelectedCellIndexPath, false, UICollectionViewScrollPosition.CenteredHorizontally);
                 }
             }
             else

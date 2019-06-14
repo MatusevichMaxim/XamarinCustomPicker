@@ -12,6 +12,5 @@ namespace CustomPicker.Interfaces
         UIFont TextFontForHorizontalPickerView(YetPickerView pickerView);
         UIColor TextColorForHorizontalPickerView(YetPickerView pickerView);
         bool UseTwoLineModeForHorizontalPickerView(YetPickerView pickerView);
-        bool PickerViewShouldMask(YetPickerView pickerView);
     }
 }

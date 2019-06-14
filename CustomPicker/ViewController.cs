@@ -28,6 +28,7 @@ namespace CustomPicker
             pickerView = new YetPickerView
             {
                 MaxCellWidth = 70,
+                StartItemIndex = 10,
                 Delegate = this,
                 DataSource = this,
             };
@@ -41,11 +42,10 @@ namespace CustomPicker
             pickerView.AddSubview(rightSeparator);
 
             View.AddSubview(pickerView);
-            pickerView.ReloadAll();
 
             pickerView.AutoAlignAxisToSuperviewAxis(ALAxis.Horizontal);
-            pickerView.AutoPinEdgeToSuperviewEdge(ALEdge.Left, 63);
-            pickerView.AutoPinEdgeToSuperviewEdge(ALEdge.Right, 63);
+            pickerView.AutoPinEdgeToSuperviewEdge(ALEdge.Left, 60);
+            pickerView.AutoPinEdgeToSuperviewEdge(ALEdge.Right, 60);
             pickerView.AutoSetDimension(ALDimension.Height, 52);
 
             leftSeparator.AutoAlignAxis(ALAxis.Vertical, pickerView, -35);
@@ -59,6 +59,12 @@ namespace CustomPicker
             rightSeparator.AutoPinEdgeToSuperviewEdge(ALEdge.Bottom);
         }
 
+        public override void ViewDidLayoutSubviews()
+        {
+                base.ViewDidLayoutSubviews();
+                pickerView.ReloadAll();
+        }
+
         public void DidSelectRow(YetPickerView pickerView, int row)
         {
             // business logic
@@ -67,11 +73,6 @@ namespace CustomPicker
         public int NumberOfRowsInHorizontalPickerView(YetPickerView pickerView)
         {
             return _items.Count;
-        }
-
-        public bool PickerViewShouldMask(YetPickerView pickerView)
-        {
-            return true;
         }
 
         public UIColor TextColorForHorizontalPickerView(YetPickerView pickerView)
